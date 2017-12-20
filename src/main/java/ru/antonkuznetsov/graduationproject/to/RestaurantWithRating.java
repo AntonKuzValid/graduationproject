@@ -2,33 +2,28 @@ package ru.antonkuznetsov.graduationproject.to;
 
 import ru.antonkuznetsov.graduationproject.model.Dish;
 import ru.antonkuznetsov.graduationproject.model.Restaurant;
-import ru.antonkuznetsov.graduationproject.model.Vote;
 
 import java.util.List;
-import java.util.Set;
 
-public class RestaurantWithScore {
+public class RestaurantWithRating {
     private Integer id;
     private String name;
-    private Integer score;
+    private Integer rating;
     private List<Dish> lunchMenu;
-    private Set<Vote> votes;
 
-    public RestaurantWithScore(Integer id, String name, Integer score, List<Dish> lunchMenu, Set<Vote> votes) {
+    public RestaurantWithRating(Integer id, String name, Integer rating, List<Dish> lunchMenu) {
         this.id = id;
         this.name = name;
-        this.score = score;
+        this.rating = rating;
         this.lunchMenu = lunchMenu;
-        this.votes = votes;
 
     }
 
-    public RestaurantWithScore(Restaurant restaurant, int score) {
+    public RestaurantWithRating(Restaurant restaurant, int rating) {
         this.id = restaurant.getId();
         this.name = restaurant.getName();
-        this.score = score;
+        this.rating = rating;
         this.lunchMenu = restaurant.getMenu();
-        this.votes = restaurant.getVotes();
     }
 
     public Integer getId() {
@@ -39,12 +34,12 @@ public class RestaurantWithScore {
         this.id = id;
     }
 
-    public Integer getScore() {
-        return score;
+    public Integer getRating() {
+        return rating;
     }
 
-    public void setScore(Integer score) {
-        this.score = score;
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 
     public List<Dish> getLunchMenu() {
@@ -63,11 +58,11 @@ public class RestaurantWithScore {
         this.name = name;
     }
 
-    public Set<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(Set<Vote> votes) {
-        this.votes = votes;
+    @Override
+    public String toString() {
+        return "RestaurantWithRating{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", rating=" + rating;
     }
 }

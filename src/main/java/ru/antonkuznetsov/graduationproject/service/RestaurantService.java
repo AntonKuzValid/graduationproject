@@ -1,7 +1,7 @@
 package ru.antonkuznetsov.graduationproject.service;
 
 import ru.antonkuznetsov.graduationproject.model.Restaurant;
-import ru.antonkuznetsov.graduationproject.to.RestaurantWithScore;
+import ru.antonkuznetsov.graduationproject.to.RestaurantWithRating;
 
 import java.util.List;
 
@@ -13,7 +13,9 @@ public interface RestaurantService {
 
     void delete(Restaurant restaurant);
 
-    RestaurantWithScore get(int id);
+    RestaurantWithRating get(int id);
 
-    List<RestaurantWithScore> getAll();
+    List<RestaurantWithRating> getAll();
+
+    RestaurantWithRating getRestaurantWithMenu(int id);
 }

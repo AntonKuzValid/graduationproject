@@ -25,6 +25,12 @@ public class Dish extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
+    public Dish(String name, int price, Restaurant restaurant) {
+        this.name = name;
+        this.price = price;
+        this.restaurant = restaurant;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

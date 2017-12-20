@@ -1,10 +1,11 @@
 package ru.antonkuznetsov.graduationproject.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.antonkuznetsov.graduationproject.model.Restaurant;
 import ru.antonkuznetsov.graduationproject.repository.RestaurantRepository;
 import ru.antonkuznetsov.graduationproject.repository.VoteRepository;
-import ru.antonkuznetsov.graduationproject.to.RestaurantWithScore;
+import ru.antonkuznetsov.graduationproject.to.RestaurantWithRating;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,6 +16,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private RestaurantRepository restaurantRepository;
     private VoteRepository voteRepository;
 
+    @Autowired
     public RestaurantServiceImpl(RestaurantRepository restaurantRepository, VoteRepository voteRepository) {
         this.restaurantRepository = restaurantRepository;
         this.voteRepository = voteRepository;
@@ -36,17 +38,22 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantWithScore get(int id) {
+    public RestaurantWithRating get(int id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElseThrow(() -> new RuntimeException(String.format("Restaurant with id=%s is not found", id)));
-//        List<Vote> votes = voteRepository.findAllByRestaurantAndVoteDate(restaurant, LocalDate.now());
-//        return new RestaurantWithScore(restaurant, votes.size());
-        return new RestaurantWithScore(restaurant, voteRepository.countVoteByRestaurantAndVoteDate(restaurant, LocalDate.now()));
+        return new RestaurantWithRating(restaurant, voteRepository.countByRestaurantIdAndVoteDate(id, LocalDate.now()));
     }
 
     @Override
-    public List<RestaurantWithScore> getAll() {
-        return restaurantRepository.findAll().stream()
-                .map(r -> new RestaurantWithScore(r, voteRepository.findAllByRestaurantAndVoteDate(r, LocalDate.now()).size()))
+    public List<RestaurantWithRating> getAll() {
+        List<Restaurant> restaurants = restaurantRepository.findAll();
+        return restaurants.stream()
+                .map(r -> new RestaurantWithRating(r, voteRepository.countByRestaurantIdAndVoteDate(r.getId(), LocalDate.now())))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public RestaurantWithRating getRestaurantWithMenu(int id) {
+        Restaurant restaurant = restaurantRepository.getWithMenu(id);
+        return new RestaurantWithRating(restaurant, voteRepository.countByRestaurantIdAndVoteDate(id, LocalDate.now()));
     }
 }

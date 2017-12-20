@@ -2,7 +2,6 @@ package ru.antonkuznetsov.graduationproject.model;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @NamedQueries({
         @NamedQuery(name = Restaurant.ALL, query = "SELECT r FROM Restaurant r left join fetch Dish "),
@@ -18,19 +17,16 @@ public class Restaurant extends AbstractBaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private List<Dish> menu;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    private Set<Vote> votes;
-
     public Restaurant() {
     }
 
-    public Restaurant(Integer id, String name, int score, List<Dish> menu) {
+    public Restaurant(Integer id, String name, List<Dish> menu) {
         super(id);
         this.name = name;
         this.menu = menu;
     }
 
-    public Restaurant(String name, int score, List<Dish> menu) {
+    public Restaurant(String name, List<Dish> menu) {
         this.name = name;
         this.menu = menu;
     }
@@ -49,14 +45,6 @@ public class Restaurant extends AbstractBaseEntity {
 
     public void setMenu(List<Dish> menu) {
         this.menu = menu;
-    }
-
-    public Set<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(Set<Vote> votes) {
-        this.votes = votes;
     }
 
 }

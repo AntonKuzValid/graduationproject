@@ -15,10 +15,6 @@ public class User extends AbstractBaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
-
     @OneToOne(mappedBy = "user")
     private Vote vote;
 
@@ -29,6 +25,15 @@ public class User extends AbstractBaseEntity {
     private Set<Role> roles;
 
     public User() {
+    }
+
+    public User(Integer id, String name, String email, String password, Vote vote, Set<Role> roles) {
+        super(id);
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.vote = vote;
+        this.roles = roles;
     }
 
     public User(String name, String email, String password) {
@@ -75,13 +80,5 @@ public class User extends AbstractBaseEntity {
 
     public void setVote(Vote vote) {
         this.vote = vote;
-    }
-
-    public Restaurant getRestaurant() {
-        return restaurant;
-    }
-
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
     }
 }

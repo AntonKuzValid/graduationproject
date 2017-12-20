@@ -9,11 +9,11 @@ public class Vote extends AbstractBaseEntity {
     @Column(name = "date", nullable = false)
     private LocalDate voteDate;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
@@ -21,6 +21,13 @@ public class Vote extends AbstractBaseEntity {
     }
 
     public Vote(LocalDate voteDate, User user, Restaurant restaurant) {
+        this.voteDate = voteDate;
+        this.user = user;
+        this.restaurant = restaurant;
+    }
+
+    public Vote(Integer id, LocalDate voteDate, User user, Restaurant restaurant) {
+        super(id);
         this.voteDate = voteDate;
         this.user = user;
         this.restaurant = restaurant;
@@ -49,4 +56,5 @@ public class Vote extends AbstractBaseEntity {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
 }

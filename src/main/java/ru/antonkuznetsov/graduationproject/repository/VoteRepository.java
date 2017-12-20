@@ -1,14 +1,12 @@
 package ru.antonkuznetsov.graduationproject.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.antonkuznetsov.graduationproject.model.Restaurant;
+import org.springframework.transaction.annotation.Transactional;
 import ru.antonkuznetsov.graduationproject.model.Vote;
 
 import java.time.LocalDate;
-import java.util.List;
 
+@Transactional(readOnly = true)
 public interface VoteRepository extends JpaRepository<Vote, Integer> {
-    List<Vote> findAllByRestaurantAndVoteDate(Restaurant restaurant, LocalDate voteDate);
-
-    Integer countVoteByRestaurantAndVoteDate(Restaurant restaurant, LocalDate voteDate);
+    Integer countByRestaurantIdAndVoteDate(Integer restaurantId, LocalDate voteDate);
 }
