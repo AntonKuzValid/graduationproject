@@ -1,36 +1,40 @@
 package ru.antonkuznetsov.graduationproject.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "votes")
+@Table(name = "votes", uniqueConstraints = {@UniqueConstraint(columnNames = {"date", "user_id"}, name = "vote_unique_date_user_idx")})
 public class Vote extends AbstractBaseEntity {
     @Column(name = "date", nullable = false)
+    @NotNull
     private LocalDate voteDate;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
+    @JoinColumn(name = "menu_id", nullable = false)
+    @NotNull
+    private Menu menu;
 
     public Vote() {
     }
 
-    public Vote(LocalDate voteDate, User user, Restaurant restaurant) {
+    public Vote(LocalDate voteDate, User user, Menu menu) {
         this.voteDate = voteDate;
         this.user = user;
-        this.restaurant = restaurant;
+        this.menu = menu;
     }
 
-    public Vote(Integer id, LocalDate voteDate, User user, Restaurant restaurant) {
+    public Vote(Integer id, LocalDate voteDate, User user, Menu menu) {
         super(id);
         this.voteDate = voteDate;
         this.user = user;
-        this.restaurant = restaurant;
+        this.menu = menu;
     }
 
     public LocalDate getVoteDate() {
@@ -49,12 +53,11 @@ public class Vote extends AbstractBaseEntity {
         this.user = user;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public Menu getMenu() {
+        return menu;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
-
 }

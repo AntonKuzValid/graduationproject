@@ -1,38 +1,37 @@
 package ru.antonkuznetsov.graduationproject.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "dishes")
-public class Dish extends AbstractBaseEntity {
-    @Column(name = "name", nullable = false)
-    private String name;
-
+public class Dish extends AbstractNamedEntity {
     @Column(name = "price", nullable = false)
+    @NotNull
     private int price;
 
-    @ManyToOne()
-    @JoinColumn(name = "restaurant_id")
-    private Restaurant restaurant;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "menu_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @NotNull
+    private Menu menu;
 
     public Dish() {
     }
 
-    public Dish(Integer id, String name, int price, Restaurant restaurant) {
-        super(id);
-        this.name = name;
+    public Dish(int price, String name, Menu menu) {
         this.price = price;
-        this.restaurant = restaurant;
+        this.name=name;
+        this.menu = menu;
     }
 
-    public Dish(String name, int price, Restaurant restaurant) {
-        this.name = name;
+    public Dish(Integer id, String name, int price, Menu menu) {
+        super(id, name);
         this.price = price;
-        this.restaurant = restaurant;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.menu = menu;
     }
 
     public int getPrice() {
@@ -43,15 +42,11 @@ public class Dish extends AbstractBaseEntity {
         this.price = price;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public Menu getMenu() {
+        return menu;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
-    }
-
-    public String getName() {
-        return name;
+    public void setMenu(Menu menu) {
+        this.menu = menu;
     }
 }

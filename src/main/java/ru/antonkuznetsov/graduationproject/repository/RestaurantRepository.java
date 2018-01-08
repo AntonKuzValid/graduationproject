@@ -7,6 +7,8 @@ import ru.antonkuznetsov.graduationproject.model.Restaurant;
 
 @Transactional(readOnly = true)
 public interface RestaurantRepository extends JpaRepository<Restaurant, Integer> {
-    @Query("SELECT r FROM Restaurant  r JOIN FETCH r.menu m WHERE r.id=?1")
-    Restaurant getWithMenu(int id);
+
+    Restaurant getByName(String name);
+
+    int deleteById(int restaurantId);
 }

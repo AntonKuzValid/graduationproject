@@ -1,29 +1,24 @@
 package ru.antonkuznetsov.graduationproject.to;
 
-import ru.antonkuznetsov.graduationproject.model.Dish;
 import ru.antonkuznetsov.graduationproject.model.Restaurant;
 
-import java.util.List;
+import java.util.Objects;
 
 public class RestaurantWithRating {
     private Integer id;
     private String name;
     private Integer rating;
-    private List<Dish> lunchMenu;
 
-    public RestaurantWithRating(Integer id, String name, Integer rating, List<Dish> lunchMenu) {
+    public RestaurantWithRating(Integer id, String name, Integer rating) {
         this.id = id;
         this.name = name;
         this.rating = rating;
-        this.lunchMenu = lunchMenu;
-
     }
 
     public RestaurantWithRating(Restaurant restaurant, int rating) {
         this.id = restaurant.getId();
         this.name = restaurant.getName();
         this.rating = rating;
-        this.lunchMenu = restaurant.getMenu();
     }
 
     public Integer getId() {
@@ -42,13 +37,6 @@ public class RestaurantWithRating {
         this.rating = rating;
     }
 
-    public List<Dish> getLunchMenu() {
-        return lunchMenu;
-    }
-
-    public void setLunchMenu(List<Dish> lunchMenu) {
-        this.lunchMenu = lunchMenu;
-    }
 
     public String getName() {
         return name;
@@ -59,10 +47,26 @@ public class RestaurantWithRating {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(id,name,rating);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RestaurantWithRating that = (RestaurantWithRating) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name)&&
+                Objects.equals(rating, that.rating);
+    }
+
+    @Override
     public String toString() {
         return "RestaurantWithRating{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", rating=" + rating;
+                ", rating=" + rating +
+                '}';
     }
 }

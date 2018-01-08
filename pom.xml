@@ -6,6 +6,9 @@
 
     <groupId>ru.antonkuznetsov</groupId>
     <artifactId>graduationproject</artifactId>
+    <packaging>war</packaging>
+
+    <name>Voting</name>
 
     <version>1.0-SNAPSHOT</version>
 
@@ -14,8 +17,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <tomcat.version>8.5.24</tomcat.version>
         <spring.version>5.0.1.RELEASE</spring.version>
         <spring-data-jpa.version>2.0.2.RELEASE</spring-data-jpa.version>
+        <spring-security.version>5.0.0.RELEASE</spring-security.version>
+        <jackson-json.version>2.9.3</jackson-json.version>
 
         <!-- Logging -->
         <logback.version>1.2.3</logback.version>
@@ -30,10 +36,13 @@
         <hibernate.version>5.2.12.Final</hibernate.version>
         <hibernate-validator.version>6.0.5.Final</hibernate-validator.version>
         <javax-el.version>3.0.1-b08</javax-el.version>
+
+        <!--Tools-->
+        <ehcache.version>3.4.0</ehcache.version>
     </properties>
 
     <build>
-        <finalName>topjava</finalName>
+        <finalName>voting</finalName>
         <defaultGoal>package</defaultGoal>
         <plugins>
             <plugin>
@@ -51,6 +60,13 @@
                 <version>2.20.1</version>
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webXml>src\main\java\webapp\WEB-INF\web.xml</webXml>
                 </configuration>
             </plugin>
         </plugins>
@@ -89,29 +105,7 @@
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>commons-logging</groupId>
-                    <artifactId>commons-logging</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
+            <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -144,20 +138,34 @@
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
         </dependency>
-
-        <!--http://hibernate.org/validator/documentation/getting-started/#unified-expression-language-el-->
         <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.el</artifactId>
-            <version>${javax-el.version}</version>
-            <scope>provided</scope>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jcache</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+            <scope>runtime</scope>
+            <version>${ehcache.version}</version>
         </dependency>
 
         <!--Web-->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.0</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-servlet-api</artifactId>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -167,7 +175,30 @@
             <version>1.2</version>
         </dependency>
 
+        <!--JSON-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+            <version>${jackson-json.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-json.version}</version>
+        </dependency>
+
         <!--Test-->
+        <dependency>
+            <groupId>org.jmockit</groupId>
+            <artifactId>jmockit</artifactId>
+            <version>1.38</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -186,11 +217,17 @@
             <version>3.8.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <version>4.2.1.RELEASE</version>
-        </dependency>
-
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-framework-bom</artifactId>
+                <version>${spring.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 </project>
