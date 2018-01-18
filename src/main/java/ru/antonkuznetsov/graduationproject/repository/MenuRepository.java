@@ -1,6 +1,9 @@
 package ru.antonkuznetsov.graduationproject.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import ru.antonkuznetsov.graduationproject.model.Menu;
 import ru.antonkuznetsov.graduationproject.model.Restaurant;
@@ -17,5 +20,13 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
 
     Optional<Menu> getByDateAndRestaurant(LocalDate date, Restaurant restaurant);
 
-    int deleteById(int MenuId);
+    int deleteByRestaurantId(int restaurantId);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Menu m WHERE m.id=:id")
+    int deleteById(@Param("id") int MenuId);
+
+    @Query("SELECT m FROM Menu  m WHERE m.restaurant.id=:id")
+    List<Menu> getAllByRestaurantId(@Param("id") int restaurantId);
 }

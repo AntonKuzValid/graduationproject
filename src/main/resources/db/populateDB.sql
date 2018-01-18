@@ -18,9 +18,9 @@ INSERT INTO user_roles (role, user_id) VALUES
   ('ROLE_ADMIN', 100003);
 
 INSERT INTO menu (date, restaurant_id) VALUES
-  (current_date, 100000),
+  (now(), 100000),
   ('2018-01-01', 100000),
-  (current_date, 100001),
+  (now(), 100001),
   ('2018-01-01', 100001);
 
 INSERT INTO dishes (menu_id, name, price) VALUES
@@ -35,6 +35,6 @@ INSERT INTO dishes (menu_id, name, price) VALUES
   (100007, 'milk', 100);
 
 INSERT INTO VOTES (DATE, menu_id, USER_ID) VALUES
-  (current_date, 100004, 100002),
+  (now(), 100004, 100002),
   ('2018-01-01', 100007, 100002),
-  ('2018-01-01', 100006, 100003);
+  ('2018-01-01', 100005, 100003);

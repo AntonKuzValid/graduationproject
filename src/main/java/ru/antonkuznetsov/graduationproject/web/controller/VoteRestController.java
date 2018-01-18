@@ -3,17 +3,15 @@ package ru.antonkuznetsov.graduationproject.web.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.antonkuznetsov.graduationproject.AuthorizedUser;
 import ru.antonkuznetsov.graduationproject.model.Vote;
 import ru.antonkuznetsov.graduationproject.service.interfaces.VoteService;
 
-import java.util.List;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping(VoteRestController.REST_URL)
@@ -26,12 +24,12 @@ public class VoteRestController {
     VoteService voteService;
 
     @GetMapping()
-    public List<Vote> getAll() {
-        return voteService.getAll();
+    public Vote get(@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(value = "date", required = false) LocalDate date) {
+        return voteService.getByUser(AuthorizedUser.id(), date != null ? date : LocalDate.now());
     }
 
-    @GetMapping(value = "/vote/{menuId}")
-    public ResponseEntity<Vote> vote(@PathVariable("menuId") int menuId) {
+    @PutMapping(value = "/vote")
+    public ResponseEntity<Vote> vote(@RequestParam("menuId") int menuId) {
         Vote vote = voteService.vote(menuId, AuthorizedUser.id());
         if (vote != null) {
             log.info("User with id {} voted successfully, vote with id {} was saved", AuthorizedUser.id(), vote.getId());

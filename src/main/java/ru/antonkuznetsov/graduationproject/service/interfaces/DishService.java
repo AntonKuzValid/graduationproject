@@ -2,8 +2,17 @@ package ru.antonkuznetsov.graduationproject.service.interfaces;
 
 import ru.antonkuznetsov.graduationproject.model.Dish;
 
-public interface DishService {
-    Dish create(Dish dish);
+import java.util.List;
 
-    Dish update(Dish dish);
+public interface DishService {
+
+    Dish get(int id);
+
+    List<Dish> getByMenuId(int menuId);
+
+    Dish create(Dish dish, int menuId);
+
+    Dish update(Dish dish, int menuId);
+
+    void delete(int id);
 }

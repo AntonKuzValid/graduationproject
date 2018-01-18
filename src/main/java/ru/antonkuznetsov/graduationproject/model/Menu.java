@@ -1,5 +1,8 @@
 package ru.antonkuznetsov.graduationproject.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -13,6 +16,7 @@ public class Menu extends AbstractBaseEntity {
 
     @OneToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Restaurant restaurant;
 

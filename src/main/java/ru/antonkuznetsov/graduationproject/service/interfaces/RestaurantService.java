@@ -16,8 +16,4 @@ public interface RestaurantService {
     Restaurant update(Restaurant restaurant);
 
     void delete(int restaurantId);
-
-    RestaurantWithRating getWithRating(int id);
-
-    List<RestaurantWithRating> getAllWithRating();
 }
